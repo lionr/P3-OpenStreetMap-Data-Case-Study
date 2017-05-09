@@ -59,6 +59,23 @@ mapping = { "St.": "Street",
             "S.": "South"
            }
 
+mapping = { "St.": "Street",
+            "St": "Street",
+            "Rd": "Road",
+            "Ave": "Avenue",
+            "Speedway": "Highway",
+            "Lanes": "Lane",
+            "Blvd": "Boulevard",
+            "E": "East",
+            "W": "West",
+            "N": "North",
+            "S": "South",
+            "E.": "East",
+            "W.": "West",
+            "N.": "North",
+            "S.": "South"
+           }
+
 def update_street_name(name, mapping):
     name_split = name.split()
     begin = name_split[0]
