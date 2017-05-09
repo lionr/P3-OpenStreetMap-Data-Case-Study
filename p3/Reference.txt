@@ -1,0 +1,1 @@
+Udacity Forum: https://discussions.udacity.com/c/nd002-data-wrangling/nd002-p-wrangle-openstreetmaps-data-with-sql
