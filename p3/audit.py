@@ -7,6 +7,23 @@ street_types = defaultdict(set)
 expected = ["Street", "Avenue", "Boulevard", "Road", "Drive", "Lane", "Circle", "Highway", "Terrace",\
             "Walk", "Place", "Court", "Cove", "Crescent", "Parkway", "Trail", "Square"]
 
+mapping = { "St.": "Street",
+            "St": "Street",
+            "Rd": "Road",
+            "Ave": "Avenue",
+            "Speedway": "Highway",
+            "Lanes": "Lane",
+            "Blvd": "Boulevard",
+            "E": "East",
+            "W": "West",
+            "N": "North",
+            "S": "South",
+            "E.": "East",
+            "W.": "West",
+            "N.": "North",
+            "S.": "South"
+           }
+
 def audit_street_type(street_types, street_name):
     m = street_type_re.search(street_name)
     if m:
@@ -20,62 +37,19 @@ def print_sorted_dict(d):
     for k in keys:
         v = d[k]
         print "%s: %d" % (k, v)
-        
-def is_street_name(elem):
-    return (elem.attrib['k'] == "addr:street")
 
 def audit():
     for event, elem in ET.iterparse(osm_file, events=("start",)):
         if elem.tag == "node" or elem.tag == "way":
             for tag in elem.iter("tag"):
-                if is_street_name(tag):
+                if tag.attrib['k'] == "addr:street":
                     audit_street_type(street_types, tag.attrib['v'])
     return street_types
 
 if __name__ == '__main__':
     pprint.pprint(dict(audit())) 
-    
-    
+        
 # fix the unexpected street types to the appropriate ones
-osm_file = open(OSMFILE, "r")
-
-street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
-street_types = defaultdict(set)
-
-mapping = { "St.": "Street",
-            "St": "Street",
-            "Rd": "Road",
-            "Ave": "Avenue",
-            "Speedway": "Highway",
-            "Lanes": "Lane",
-            "Blvd": "Boulevard",
-            "E": "East",
-            "W": "West",
-            "N": "North",
-            "S": "South",
-            "E.": "East",
-            "W.": "West",
-            "N.": "North",
-            "S.": "South"
-           }
-
-mapping = { "St.": "Street",
-            "St": "Street",
-            "Rd": "Road",
-            "Ave": "Avenue",
-            "Speedway": "Highway",
-            "Lanes": "Lane",
-            "Blvd": "Boulevard",
-            "E": "East",
-            "W": "West",
-            "N": "North",
-            "S": "South",
-            "E.": "East",
-            "W.": "West",
-            "N.": "North",
-            "S.": "South"
-           }
-
 def update_street_name(name, mapping):
     name_split = name.split()
     begin = name_split[0]
