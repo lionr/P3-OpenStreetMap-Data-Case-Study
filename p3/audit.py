@@ -1,4 +1,13 @@
 # find unexpected street types
+import xml.etree.cElementTree as ET
+import re
+from collections import defaultdict
+import pprint
+import cerberus
+import schema1
+import csv
+import codecs
+OSMFILE = 'Austin.osm'
 osm_file = open(OSMFILE, "r")
 
 street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
