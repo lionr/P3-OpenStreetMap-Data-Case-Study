@@ -68,5 +68,3 @@ st_types = audit()
 for st_type, ways in st_types.iteritems():
     for name in ways:
         print name, "=>", update_street_name(name, mapping)
-        
-# Interstate 35 highway: https://en.wikipedia.org/wiki/Interstate_35
