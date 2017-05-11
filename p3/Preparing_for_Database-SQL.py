@@ -2,10 +2,8 @@ import csv
 import codecs
 import re
 import xml.etree.cElementTree as ET
-
 import cerberus
-
-import schema
+import myschema
 
 from audit import update_street_name, update_phone_num
 
@@ -20,7 +18,7 @@ WAY_TAGS_PATH = "ways_tags.csv"
 LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 
-SCHEMA = schema1.schema
+SCHEMA = myschema.schema
 
 # Make sure the fields order in the csvs matches the column order in the sql table schema
 NODE_FIELDS = ['id', 'lat', 'lon', 'user', 'uid', 'version', 'changeset', 'timestamp']
