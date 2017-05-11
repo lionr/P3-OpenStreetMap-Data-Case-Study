@@ -1,4 +1,3 @@
-# find unexpected street types
 import xml.etree.cElementTree as ET
 import re
 from collections import defaultdict
@@ -10,6 +9,7 @@ import codecs
 OSMFILE = 'Austin.osm'
 osm_file = open(OSMFILE, "r")
 
+# find unexpected street types
 street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
 street_types = defaultdict(set)
 
@@ -77,3 +77,40 @@ st_types = audit()
 for st_type, ways in st_types.iteritems():
     for name in ways:
         print name, "=>", update_street_name(name, mapping)
+
+# correct phone number format
+PHONENUM = re.compile(r'\+1\s\d{3}\s\d{3}\s\d{4}')    
+
+def update_phone_num(phone_num):
+    # Check for valid phone number format
+    m = PHONENUM.match(phone_num)
+    if m is None:
+        # Convert all dashes to spaces
+        if "-" in phone_num:
+            phone_num = re.sub("-", " ", phone_num)
+        # Remove all brackets
+        if "(" in phone_num or ")" in phone_num:
+            phone_num = re.sub("[()]", "", phone_num)
+        # Space out 10 straight numbers
+        if re.match(r'\d{10}', phone_num) is not None:
+            phone_num = phone_num[:3] + " " + phone_num[3:6] + " " + phone_num[6:]
+        # Space out 11 straight numbers
+        elif re.match(r'\d{11}', phone_num) is not None:
+            phone_num = phone_num[:1] + " " + phone_num[1:4] + " " + phone_num[4:7] + " " + phone_num[7:]
+        # Add full country code
+        if re.match(r'\d{3}\s\d{3}\s\d{4}', phone_num) is not None:
+            phone_num = "+1 " + phone_num
+        # Add + in country code
+        elif re.match(r'1\s\d{3}\s\d{3}\s\d{4}', phone_num) is not None:
+            phone_num = "+" + phone_num
+        # Ignore tag if no area code and local number (<10 digits)
+        elif sum(c.isdigit() for c in phone_num) < 10:
+            return None
+    return phone_num
+
+osm_file.seek(0)
+for event, elem in ET.iterparse(osm_file, events=("start",)):
+        if elem.tag == "node" or elem.tag == "way":
+            for tag in elem.iter("tag"):
+                if tag.attrib['k'] == "phone":
+                    print tag.attrib['v'], "=>", update_phone_num(tag.attrib['v'])
