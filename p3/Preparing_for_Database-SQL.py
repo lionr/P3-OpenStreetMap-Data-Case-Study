@@ -1,4 +1,15 @@
-OSM_PATH = OSMFILE
+import csv
+import codecs
+import re
+import xml.etree.cElementTree as ET
+
+import cerberus
+
+import schema
+
+from audit import update_street_name, update_phone_num
+
+OSM_PATH = 'Austin.osm'
 
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
