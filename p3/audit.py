@@ -1,28 +1,34 @@
 import xml.etree.cElementTree as ET
-import re
 from collections import defaultdict
-import pprint
-import cerberus
-import schema1
-import csv
-import codecs
-OSMFILE = 'Austin.osm'
+import re
+
+OSMFILE = '/Users/Liu/Self-learning/DataAnalytics/project3/austin.osm'
 osm_file = open(OSMFILE, "r")
 
 # find unexpected street types
 street_type_re = re.compile(r'\b\S+\.?$', re.IGNORECASE)
-street_types = defaultdict(set)
+PHONENUM = re.compile(r'\+1\s\d{3}\s\d{3}\s\d{4}')  
+POSTCODE = re.compile(r'\b\d{5}\b')  
+expected = ["Street", "Avenue", "Boulevard", "Road", "Drive", "Lane", "Circle", "Highway", "Terrace", "Park",\
+            "Walk", "Place", "Court", "Cove", "Crescent", "Parkway", "Trail", "Square", "Plaza", "Path", "Way", \
+            "Center", "Mission"]
 
-expected = ["Street", "Avenue", "Boulevard", "Road", "Drive", "Lane", "Circle", "Highway", "Terrace",\
-            "Walk", "Place", "Court", "Cove", "Crescent", "Parkway", "Trail", "Square"]
-
-mapping = { "St.": "Street",
-            "St": "Street",
-            "Rd": "Road",
+mapping = { "St": "Street",
+            "St.": "Street",
+            "Rd":"Road",
+            "Rd.": "Road",
+            "Dr": "Drive",
+            "Dr.": "Drive",
             "Ave": "Avenue",
+            "Ave.": "Avenue",
             "Speedway": "Highway",
             "Lanes": "Lane",
             "Blvd": "Boulevard",
+            "Blvd.": "Boulevard",
+            "Ct": "Court",
+            "Ct.": "Court",
+            "Crt": "Court",
+            "Crt.": "Court",
             "E": "East",
             "W": "West",
             "N": "North",
@@ -32,34 +38,16 @@ mapping = { "St.": "Street",
             "N.": "North",
             "S.": "South"
            }
-
+         
 def audit_street_type(street_types, street_name):
     m = street_type_re.search(street_name)
     if m:
         street_type = m.group()
         if street_type not in expected:
             street_types[street_type].add(street_name)
-
-def print_sorted_dict(d):
-    keys = d.keys()
-    keys = sorted(keys, key=lambda s: s.lower())
-    for k in keys:
-        v = d[k]
-        print "%s: %d" % (k, v)
-
-def audit():
-    for event, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if tag.attrib['k'] == "addr:street":
-                    audit_street_type(street_types, tag.attrib['v'])
-    return street_types
-
-if __name__ == '__main__':
-    pprint.pprint(dict(audit())) 
-        
-# fix the unexpected street types to the appropriate ones
-def update_street_name(name, mapping):
+            
+# fix the unexpected street types to the appropriate ones   
+def update_street_name(name):
     name_split = name.split()
     begin = name_split[0]
     last = name_split[-1]
@@ -70,24 +58,42 @@ def update_street_name(name, mapping):
         delimiter = ' '
         return delimiter.join(name_split)
     else:
-        return name
-    
-st_types = audit()
+        delimiter = ' '
+        return delimiter.join(name_split)
 
+def is_street_name(elem):
+    return (elem.attrib['k'] == "addr:street")
+
+def audit(osmfile):
+    street_types = defaultdict(set)
+    for event, elem in ET.iterparse(osm_file, events=("start",)):
+           
+        if elem.tag == "node" or elem.tag == "way":
+            for tag in elem.iter("tag"):
+                if is_street_name(tag):
+                    audit_street_type(street_types, tag.attrib['v'])
+    return street_types
+
+# display the process of updating street names using "=>"
+st_types = audit(OSMFILE)
 for st_type, ways in st_types.iteritems():
     for name in ways:
-        print name, "=>", update_street_name(name, mapping)
-
+        better_name = update_street_name(name)
+        print name, "=>", better_name
+            
 # correct phone number format
-PHONENUM = re.compile(r'\+1\s\d{3}\s\d{3}\s\d{4}')    
-
+def check_phone_num(phone_num):
+    m = PHONENUM.match(phone_num)
+    if m is None:
+        return True
+    
 def update_phone_num(phone_num):
     # Check for valid phone number format
     m = PHONENUM.match(phone_num)
     if m is None:
-        # Convert all dashes to spaces
-        if "-" in phone_num:
-            phone_num = re.sub("-", " ", phone_num)
+        # Convert all dashes or dots to spaces
+        if "-" in phone_num or "." in phone_num:
+            phone_num = re.sub("[-.]", " ", phone_num)
         # Remove all brackets
         if "(" in phone_num or ")" in phone_num:
             phone_num = re.sub("[()]", "", phone_num)
@@ -95,7 +101,7 @@ def update_phone_num(phone_num):
         if re.match(r'\d{10}', phone_num) is not None:
             phone_num = phone_num[:3] + " " + phone_num[3:6] + " " + phone_num[6:]
         # Space out 11 straight numbers
-        elif re.match(r'\d{11}', phone_num) is not None:
+        elif re.match(r'\d{11}|\+1\d{11}', phone_num) is not None:
             phone_num = phone_num[:1] + " " + phone_num[1:4] + " " + phone_num[4:7] + " " + phone_num[7:]
         # Add full country code
         if re.match(r'\d{3}\s\d{3}\s\d{4}', phone_num) is not None:
@@ -109,8 +115,28 @@ def update_phone_num(phone_num):
     return phone_num
 
 osm_file.seek(0)
-for event, elem in ET.iterparse(osm_file, events=("start",)):
+# display the process of updating phone numbers with incorrect format
+for event, elem in ET.iterparse(osm_file, events=("start",)): 
+    if elem.tag == "node" or elem.tag == "way":
+        for tag in elem.iter("tag"):
+            if tag.attrib['k'] == "phone" and check_phone_num(tag.attrib['v']):
+                print tag.attrib['v'], "=>", update_phone_num(tag.attrib['v'])
+
+# check post code fromat
+def check_post_code(post_code):
+    m = POSTCODE.match(post_code)
+    if m is None:
+        return True
+    
+osm_file.seek(0)
+def check_all_post_code():
+    for event, elem in ET.iterparse(osm_file, events=("start",)):
         if elem.tag == "node" or elem.tag == "way":
             for tag in elem.iter("tag"):
-                if tag.attrib['k'] == "phone":
-                    print tag.attrib['v'], "=>", update_phone_num(tag.attrib['v'])
+                if tag.attrib['k'] == "addr:postcode" and check_post_code(tag.attrib['v']):
+                    return tag.attrib['v']
+if check_all_post_code() is None:
+    print "All postcodes are in the right format!"
+    # after running the code, we can find that all postcodes are in the right format 
+else: 
+    print "Some postcodes are in the wrong format!"

@@ -4,10 +4,11 @@ import re
 import xml.etree.cElementTree as ET
 import cerberus
 import my_schema
+import pprint
 
 from audit import update_street_name, update_phone_num
 
-OSM_PATH = 'Austin.osm'
+OSM_PATH = 'Austin_sample.osm'
 
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
@@ -48,7 +49,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         node_attribs['lat']= float(node_attribs['lat'])
             
         for child in element.iter('tag'):
-            if PROBLEMCHARS.search(child.attrib['k']) == None:
+            if PROBLEMCHARS.search(child.attrib['k']) == None and \
+            PROBLEMCHARS.search(child.attrib['v']) == None:
                 tag_dict['id'] = int(node_attribs['id'])
                 if ":" not in child.attrib['k']:
                     tag_dict['key'] = child.attrib['k']
@@ -59,13 +61,10 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                     tag_dict['type'] = child.attrib['k'][:pcolon - 1]
                     
                 if child.attrib['k'] == "addr:street":
-                    m = street_type_re.search(child.attrib['v'])
-                    if m:
-                        street_type = m.group()
-                        if street_type not in expected:
-                            tag_dict['value'] = update_street_name(child.attrib['v'], mapping)
+                    tag_dict['value'] = update_street_name(child.attrib['v'])
                 elif child.attrib['k'] == "phone":
                     tag_dict['value'] = update_phone_num(child.attrib['v'])
+                # because all the postcodes are already in the correct format so we do not need to update them
                 else:
                     tag_dict['value'] = child.attrib['v']  
 
@@ -81,12 +80,13 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
         way_attribs['changeset']= int(way_attribs['changeset'])
             
         for child in element.iter('tag'):
-            if PROBLEMCHARS.search(child.attrib['k']) == None:
+            if PROBLEMCHARS.search(child.attrib['k']) == None and \
+            PROBLEMCHARS.search(child.attrib['v']) == None:
                 tag_dict['id'] = int(way_attribs['id'])
                 tag_dict['key'] = child.attrib['k']
                 tag_dict['type'] = 'regular'
                 if child.attrib['k'] == "addr:street":
-                    tag_dict['value'] = update_street_name(child.attrib['v'], mapping)
+                    tag_dict['value'] = update_street_name(child.attrib['v'])
                 elif child.attrib['k'] == "phone":
                     tag_dict['value'] = update_phone_num(child.attrib['v'])
                 else:
