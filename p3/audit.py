@@ -2,7 +2,7 @@ import xml.etree.cElementTree as ET
 from collections import defaultdict
 import re
 
-OSMFILE = '/Users/Liu/Self-learning/DataAnalytics/project3/austin.osm'
+OSMFILE = 'austin_sample.osm'
 osm_file = open(OSMFILE, "r")
 
 # find unexpected street types
