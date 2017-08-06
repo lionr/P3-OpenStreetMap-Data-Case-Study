@@ -1,1 +1,0 @@
-I have referred to the wineQualityInfo.txt for the further explanation about some features in the data set.
