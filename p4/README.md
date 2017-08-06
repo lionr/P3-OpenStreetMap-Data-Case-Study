@@ -1,3 +1,8 @@
+Project Overview
+In this project, you will use R and apply exploratory data analysis techniques to explore relationships in one variable to multiple variables and to explore a selected data set for distributions, outliers, and anomalies.
+
+Prepare for this project with: [Data Analysis with R](https://classroom.udacity.com/courses/ud651).
+
 How do I Complete this Project?
 This project is connected to the Data Analysis With R course, but depending on your background knowledge of exploratory data analysis, you may not need to take the whole class to complete this project.
 
