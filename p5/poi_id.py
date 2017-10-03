@@ -44,6 +44,7 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### Task 2: Remove outliers
 data_dict.pop("TOTAL")
 data_dict.pop("THE TRAVEL AGENCY IN THE PARK")
+data_dict.pop('LOCKHART EUGENE E')
 
 
 ### Task 3: Create new feature(s)
@@ -177,7 +178,7 @@ param_grid = dict(
 sss = StratifiedShuffleSplit(labels_train, 20, test_size=0.5, random_state=0)
 # Create grid to fit and predict with grid search
 grid = GridSearchCV(pipe, cv=sss, param_grid=param_grid, scoring='f1')
-grid.fit(features_train, labels_train)
+grid.fit(features, labels)
 labels_predictions = grid.predict(features_test)
 
 clf = grid.best_estimator_
