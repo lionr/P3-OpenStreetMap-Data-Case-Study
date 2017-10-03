@@ -11816,7 +11816,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -11832,7 +11832,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Basic information of the data</span>
@@ -11890,7 +11890,7 @@ memory usage: 25.1+ KB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;email_address&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -11907,7 +11907,7 @@ memory usage: 25.1+ KB
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[90]:</div>
+<div class="prompt output_prompt">Out[37]:</div>
 
 
 
@@ -12092,18 +12092,20 @@ memory usage: 25.1+ KB
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>After Scattering the dataset based on the salary and bonus feature of the points, I find two outliers: TOTAL and THE TRAVEL AGENCY IN THE PARK, which apparently are not people.</p>
+<p>Also, I find there's a man called LOCKHART EUGENE E and all the values are NaN, so that's a totally invalid point and I need to remove it from the dataset.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># pop out two outliers and leaving 144 useful datasets</span>
 <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TOTAL&#39;</span><span class="p">)</span>
 <span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;THE TRAVEL AGENCY IN THE PARK&#39;</span><span class="p">)</span>
+<span class="n">data_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;LOCKHART EUGENE E&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12116,7 +12118,7 @@ memory usage: 25.1+ KB
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[91]:</div>
+<div class="prompt output_prompt">Out[38]:</div>
 
 
 
@@ -12134,14 +12136,14 @@ memory usage: 25.1+ KB
  &#39;from_this_person_to_poi&#39;: &#39;NaN&#39;,
  &#39;loan_advances&#39;: &#39;NaN&#39;,
  &#39;long_term_incentive&#39;: &#39;NaN&#39;,
- &#39;other&#39;: 362096,
+ &#39;other&#39;: &#39;NaN&#39;,
  &#39;poi&#39;: False,
  &#39;restricted_stock&#39;: &#39;NaN&#39;,
  &#39;restricted_stock_deferred&#39;: &#39;NaN&#39;,
  &#39;salary&#39;: &#39;NaN&#39;,
  &#39;shared_receipt_with_poi&#39;: &#39;NaN&#39;,
  &#39;to_messages&#39;: &#39;NaN&#39;,
- &#39;total_payments&#39;: 362096,
+ &#39;total_payments&#39;: &#39;NaN&#39;,
  &#39;total_stock_value&#39;: &#39;NaN&#39;}</pre>
 </div>
 
@@ -12164,7 +12166,7 @@ memory usage: 25.1+ KB
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Features-Used">Features Used<a class="anchor-link" href="#Features-Used">&#194;&#182;</a></h3><p>I used SelectKBest to help me select the following nine features in my POI identifier, ordered by importances descending (the first decimal number of each row):</p>
+<h3 id="Features-Used">Features Used<a class="anchor-link" href="#Features-Used">&#194;&#182;</a></h3><p>The algorithm I finally used was DecisionTreeClassifier and I used SelectKBest to help me select the following nine features in my POI identifier, ordered by importances descending (the first decimal number of each row):</p>
 <ul>
 <li>feature no. 1 shared_receipt_with_poi 0.403561962807 15.7854252775</li>
 <li>feature no. 2 from_poi_to_this_person_ratio 0.147344335528 2.48838097173</li>
@@ -12176,7 +12178,7 @@ memory usage: 25.1+ KB
 <li>feature no. 8 total_stock_value 0.0 16.8651432616</li>
 </ul>
 <p>shared_receipt_with_poi, from_poi_to_this_person_ratio, salary are the most important features.</p>
-<h3 id="Selection-Process">Selection Process<a class="anchor-link" href="#Selection-Process">&#194;&#182;</a></h3><p>I used SelectKBest in a pipeline with grid search to find the K best features.</p>
+<h3 id="Selection-Process">Selection Process<a class="anchor-link" href="#Selection-Process">&#194;&#182;</a></h3><p>I used SelectKBest in a pipeline with grid search to find the K best features. SelectKBest removes all but the k hightest scoring features. The number, k, was chosen by an exhaustive grid search decided by the "f1" scoring estimator.</p>
 <h3 id="Features-Scaling">Features Scaling<a class="anchor-link" href="#Features-Scaling">&#194;&#182;</a></h3><p>I choose two classifier: SVM and DecisionTreeClassifier</p>
 <p>According to <a href="http://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf">A Practical Guide to Support Vector Classification </a>, scaling before applying SVM is very important. The main advantage of scaling is to avoid attributes in greater numeric ranges dominating those in smaller numeric ranges. Another advantage is to avoid numerical difficulties during the calculation. Because kernel values usually depend on the inner products of feature vectors, e.g. the linear kernel and the polynomial ker- nel, large attribute values might cause numerical problems.</p>
 <p>However, Scaling isn't required for tree-based algorithms because the splitting of the data is based on a threshold value.</p>
@@ -12226,7 +12228,8 @@ memory usage: 25.1+ KB
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Tuning the parameters of an algorithm means adjusting the parameters in a certain way to achieve the optimal performance. I simply use GridSearchCV to help me to find the best parameters combination. The algorithm performance can be measured in many ways such as accuracy, precision and recall etc.</p>
+<p>Tuning the parameters of an algorithm means adjusting the parameters in a certain way to achieve the optimal performance. If I don't tune the parameters, definitely I will end up using the defaults, which will not result in an optimal performance. In other words, the data can't be learned well and the performance may suffer.</p>
+<p>I simply use GridSearchCV to help me to find the best parameters combination. The algorithm performance can be measured in many ways such as accuracy, precision and recall etc.</p>
 <p>For the chosen DecisionTreeClassifier, I have tried many combinations of parameters. It can be seen as below:</p>
 <ul>
 <li>dtc__criterion = ['gini', 'entropy'],</li>
@@ -12280,13 +12283,10 @@ memory usage: 25.1+ KB
 <li>F1: 0.38493     </li>
 <li>F2: 0.38226</li>
 </ul>
-<p>To understand precision and recall, the following image shows the definition in a clear way:
-<img src="http://nlpforhackers.io/wp-content/uploads/2017/01/Precision-Recall.png" alt="alt text" title="Precision and Recall"></p>
+<p>To understand it in a simpler way:</p>
 <ul>
-<li>TP – True Positives (Samples the classifier has correctly classified as positives)</li>
-<li>TN – True Negatives (Samples the classifier has correctly classified as negatives)</li>
-<li>FP – False Positives (Samples the classifier has incorrectly classified as positives)</li>
-<li>FN – False Negatives (Samples the classifier has incorrectly classified as negatives)</li>
+<li>Precisions refer to the ratio of correct positive predicitons made out of all positive predicitons we made. Let's see this algorithm's performance to clearly understand it: we made 1954 postive predicitons, but only 761 are correct, so precision = 761/1954 = 0.38946</li>
+<li>Recall refers to the ratio of correct positive predictions made out of all actual postive points. In reality, the number of the total positive points are 2000, in which 761 we predicted correctly, so recall is 761/2000 = 0.38050</li>
 </ul>
 <p>The total predictions are 15000 points, in which 761 are true positives, 1193 are false positives, 1239 are false negatives and 11807 are true negatives.</p>
 <p>It's easy to see there'e a tradeoff between precision and recall, that's why we use "f1" as the parameter of scoring when applying gridSeachCV.</p>
