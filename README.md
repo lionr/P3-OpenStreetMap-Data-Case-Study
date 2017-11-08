@@ -13,28 +13,28 @@ Use descriptive statistics and a statistical test to analyze the Stroop effect, 
 
 [Link to report]()
 
-### PART 3: Intro to Data Analysis (Python)
-#### Investigate a Dataset
+### PART 3: Intro to Data Analysis 
+#### Investigate a Dataset (Using Python)
 Choose one of Udacity's curated datasets and investigate it using NumPy and Pandas. Go through the entire data analysis process, starting by posing a question and finishing by sharing your findings.
 
 [Link to report]()
 
-### PART 4: Data Wrangling (Python, SQL)
-#### Wrangle OpenStreetMap Data 
+### PART 4: Data Wrangling 
+#### Wrangle OpenStreetMap Data (Using Python, SQL)
 Choose any area of the world in https://www.openstreetmap.org and use data munging techniques, such as assessing the quality of the data for validity, accuracy, completeness, consistency and uniformity, to clean the OpenStreetMap data for a part of the world that you care about. Choose to learn SQL or MongoDB and apply your chosen schema to the project.
 
 [Link to report]()
 
-### PART 5: Exploratory Data Analysis (R)
-#### Explore and Summarize Data
+### PART 5: Exploratory Data Analysis 
+#### Explore and Summarize Data (Using R)
 Use R and apply exploratory data analysis techniques to explore a selected data set for distributions, outliers, and anomalies.
 
-### PART 6: Intro to Machine (Python)
-#### Identify Fraud from Enron Email
+### PART 6: Intro to Machine 
+#### Identify Fraud from Enron Email (Using Python)
 Play detective and put your machine learning skills to use by building an algorithm to identify Enron Employees who may have committed fraud based on the public Enron financial and email dataset.
 
 ### PART 7: Data Visualization (Learning)
-
+#### Make Effective Data Visualization (Using D3.js)
 Create a data visualization from a data set that tells a story or highlights trends or patterns in the data. Use either dimple.js or d3.js to create the visualization. Your work should be a reflection of the theory and practice of data visualization, such as visual encodings, design principles, and effective communication.
 
-### PART 8: A/B Testing (Learning)
+### PART 8: A/B Testing (not learned)
