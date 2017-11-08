@@ -29,12 +29,18 @@ Choose any area of the world in https://www.openstreetmap.org and use data mungi
 #### Explore and Summarize Data (Using R)
 Use R and apply exploratory data analysis techniques to explore a selected data set for distributions, outliers, and anomalies.
 
+[Link to report]()
+
 ### PART 6: Intro to Machine 
 #### Identify Fraud from Enron Email (Using Python)
 Play detective and put your machine learning skills to use by building an algorithm to identify Enron Employees who may have committed fraud based on the public Enron financial and email dataset.
 
+[Link to report]()
+
 ### PART 7: Data Visualization (Learning)
 #### Make Effective Data Visualization (Using D3.js)
 Create a data visualization from a data set that tells a story or highlights trends or patterns in the data. Use either dimple.js or d3.js to create the visualization. Your work should be a reflection of the theory and practice of data visualization, such as visual encodings, design principles, and effective communication.
+
+[Link to report]()
 
 ### PART 8: A/B Testing (not learned)
