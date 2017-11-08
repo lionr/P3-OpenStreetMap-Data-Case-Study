@@ -36,3 +36,14 @@ Choose any area of the world in https://www.openstreetmap.org and use data mungi
 ### P4: Explore and Summarize Data
 
 Use R and apply exploratory data analysis techniques to explore a selected data set for distributions, outliers, and anomalies.
+Prepare for this project with: [Data Analysis with R](https://classroom.udacity.com/courses/ud651).
+
+### P5: 
+
+Play detective and put your machine learning skills to use by building an algorithm to identify Enron Employees who may have committed fraud based on the public Enron financial and email dataset.
+
+Prepare for this project with: [Intro to Machine Learning](https://classroom.udacity.com/courses/ud120).
+
+### P6 (Learning)
+
+### P7 (Learning)
