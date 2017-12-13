@@ -31,7 +31,7 @@ Use R and apply exploratory data analysis techniques to explore a selected data 
 
 [Link to report]()
 
-### PART 5: Intro to Machine 
+### PART 5: Intro to Machine Learning
 #### Identify Fraud from Enron Email (Using Python)
 Play detective and put your machine learning skills to use by building an algorithm to identify Enron Employees who may have committed fraud based on the public Enron financial and email dataset.
 
