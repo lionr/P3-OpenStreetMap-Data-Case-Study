@@ -8,6 +8,5 @@ In this data visulization work, I am going to explore the wheather's share on de
 
 
 # Resources
-https://www.w3schools.com/js/default.asp
-
-http://learnjsdata.com/read_data.html
+-https://www.w3schools.com/js/default.asp
+-http://learnjsdata.com/read_data.html
